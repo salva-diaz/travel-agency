@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Cities;
 
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -19,7 +20,7 @@ class StoreCityTest extends TestCase
 
         $response = $this->post('/api/cities', $city);
 
-        $response->assertStatus(201);
+        $response->assertStatus(Response::HTTP_CREATED);
 
         $this->assertDatabaseHas('cities', [
             'name' => $city['name'],

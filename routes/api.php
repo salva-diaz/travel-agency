@@ -46,7 +46,7 @@ Route::prefix('cities')
     ->middleware([])
     ->group(static function () {
         Route::get('/', ListCityController::class);
-        Route::get('/{city}', GetCityController::class)->withTrashed();
+        Route::get('/{city}', GetCityController::class);
         Route::post('/', StoreCityController::class);
         Route::put('/{city}', UpdateCityController::class);
         Route::delete('/{city}', DeleteCityController::class);
