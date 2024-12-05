@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Database\Factories\UserFactory;
+use Database\Factories\CityFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,6 +17,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         UserFactory::new()->count(10)->create();
+
+        CityFactory::new()->count(10)->create();
 
         // UserFactory::factory()->create([
         //     'name' => 'Test User',

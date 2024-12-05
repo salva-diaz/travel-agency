@@ -7,4 +7,5 @@ use Lightit\Shared\App\Providers\EventServiceProvider;
 return [
     AppServiceProvider::class,
     EventServiceProvider::class,
+    Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 ];
