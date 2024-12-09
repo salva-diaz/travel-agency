@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Lightit\Cities\App\Request;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Lightit\Cities\Domain\DataTransferObjects\CityDto;
 
 class StoreCityFormRequest extends FormRequest
@@ -17,7 +18,7 @@ class StoreCityFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            self::NAME => ['required', 'unique:cities,name'],
+            self::NAME => ['required', Rule::unique('cities', 'name')],
         ];
     }
 
