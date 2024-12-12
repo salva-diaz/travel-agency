@@ -22,5 +22,6 @@ class DeleteCityTest extends TestCase
         $this->assertDatabaseMissing('cities', [
             'id' => $city->id,
         ]);
+
     }
 }
