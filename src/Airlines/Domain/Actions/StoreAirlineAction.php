@@ -11,12 +11,11 @@ class StoreAirlineAction
 {
     public function execute(AirlineDto $airlineDto): Airline
     {
-        $airline = new Airline([
+        /** @var Airline $airline */
+        $airline = Airline::create([
             'name' => $airlineDto->name,
             'description' => $airlineDto->description,
         ]);
-
-        $airline->save();
 
         return $airline;
     }

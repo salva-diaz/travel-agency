@@ -11,15 +11,14 @@ class StoreFlightAction
 {
     public function execute(FlightDto $flightDto): Flight
     {
-        $flight = new Flight([
+        /** @var Flight $flight */
+        $flight = Flight::create([
             'departure_time' => $flightDto->departure_time,
             'arrival_time' => $flightDto->arrival_time,
             'departure_city_id' => $flightDto->departure_city_id,
             'arrival_city_id' => $flightDto->arrival_city_id,
             'airline_id' => $flightDto->airline_id,
         ]);
-
-        $flight->save();
 
         return $flight;
     }
