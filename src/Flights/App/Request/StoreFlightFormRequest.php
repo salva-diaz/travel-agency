@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Lightit\Flights\App\Request;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Lightit\Flights\App\Rules\ValidAirlineCities;
+use Lightit\Flights\App\Rules\ValidAirlineCitiesRule;
 use Lightit\Flights\Domain\DataTransferObjects\FlightDto;
 
 class StoreFlightFormRequest extends FormRequest
@@ -32,13 +32,13 @@ class StoreFlightFormRequest extends FormRequest
                 'required',
                 'integer',
                 'exists:cities,id',
-                new ValidAirlineCities($this->integer(self::AIRLINE_ID)),
+                new ValidAirlineCitiesRule($this->integer(self::AIRLINE_ID)),
             ],
             self::ARRIVAL_CITY_ID => [
                 'required',
                 'integer',
                 'exists:cities,id',
-                new ValidAirlineCities($this->integer(self::AIRLINE_ID)),
+                new ValidAirlineCitiesRule($this->integer(self::AIRLINE_ID)),
             ],
             self::AIRLINE_ID => ['required', 'integer', 'exists:airlines,id'],
         ];

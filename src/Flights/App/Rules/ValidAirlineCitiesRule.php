@@ -7,7 +7,7 @@ namespace Lightit\Flights\App\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Lightit\Airlines\Domain\Models\Airline;
 
-class ValidAirlineCities implements Rule
+class ValidAirlineCitiesRule implements Rule
 {
     public function __construct(
         protected int $airlineId,
