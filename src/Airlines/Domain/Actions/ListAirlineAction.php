@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Lightit\Airlines\Domain\Actions;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Model;
 use Lightit\Airlines\Domain\Models\Airline;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -13,11 +12,14 @@ use Spatie\QueryBuilder\QueryBuilder;
 class ListAirlineAction
 {
     /**
-     * @return LengthAwarePaginator<Model>
+     * @return LengthAwarePaginator<Airline>
      */
     public function execute(): LengthAwarePaginator
     {
-        return QueryBuilder::for(Airline::class)
+        /**
+         * @var LengthAwarePaginator<Airline>
+         */
+        $paginate = QueryBuilder::for(Airline::class)
             ->allowedFilters([
                 'name',
                 'description',
@@ -32,5 +34,7 @@ class ListAirlineAction
             ->allowedSorts('name', 'active_flights_count')
             ->withCount('activeFlights')
             ->paginate();
+
+        return $paginate;
     }
 }

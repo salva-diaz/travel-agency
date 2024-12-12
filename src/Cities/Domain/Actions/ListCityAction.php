@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Lightit\Cities\Domain\Actions;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Model;
 use Lightit\Cities\Domain\Models\City;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -13,11 +12,14 @@ use Spatie\QueryBuilder\QueryBuilder;
 class ListCityAction
 {
     /**
-     * @return LengthAwarePaginator<Model>
+     * @return LengthAwarePaginator<City>
      */
     public function execute(): LengthAwarePaginator
     {
-        return QueryBuilder::for(City::class)
+        /**
+         * @var LengthAwarePaginator<City>
+         */
+        $paginate = QueryBuilder::for(City::class)
             ->allowedFilters([
                 'name',
                 // Filter cities by airline id. Cities must have at least one flight that belongs to the airline departing or arriving to the city
@@ -33,5 +35,7 @@ class ListCityAction
             ->withCount('departureFlights')
             ->withCount('arrivalFlights')
             ->paginate();
+
+        return $paginate;
     }
 }
