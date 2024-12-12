@@ -15,6 +15,6 @@ class DeleteAirlineController
 
         return responder()
             ->success()
-            ->respond();
+            ->respond(JsonResponse::HTTP_NO_CONTENT);
     }
 }

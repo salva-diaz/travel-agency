@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Cities;
 
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class StoreCityTest extends TestCase

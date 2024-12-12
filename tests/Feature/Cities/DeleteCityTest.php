@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Cities;
 
+use Illuminate\Http\JsonResponse;
 use Database\Factories\CityFactory;
 use Tests\TestCase;
 
@@ -17,11 +18,11 @@ class DeleteCityTest extends TestCase
             'id' => $city->id,
         ]);
 
-        $this->delete("/api/cities/{$city->id}");
+        $response = $this->delete("/api/cities/{$city->id}");
+        $response->assertStatus(JsonResponse::HTTP_NO_CONTENT);
 
         $this->assertDatabaseMissing('cities', [
             'id' => $city->id,
         ]);
-
     }
 }
