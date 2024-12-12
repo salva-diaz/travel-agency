@@ -54,7 +54,6 @@ Route::prefix('users')
     });
 
 Route::prefix('cities')
-    ->middleware([])
     ->group(static function () {
         Route::get('/', ListCityController::class);
         Route::get('/{city}', GetCityController::class);
