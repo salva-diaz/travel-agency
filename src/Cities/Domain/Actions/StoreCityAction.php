@@ -12,7 +12,7 @@ class StoreCityAction
     public function execute(CityDto $cityDto): City
     {
         $city = new City([
-            'name' => $cityDto->getName(),
+            'name' => $cityDto->name,
         ]);
 
         $city->save();

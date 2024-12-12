@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Lightit\Cities\Domain\DataTransferObjects;
+namespace Lightit\Airlines\Domain\DataTransferObjects;
 
-class CityDto
+class AirlineDto
 {
     public function __construct(
         public readonly string $name,
+        public readonly string $description,
     ) {
     }
 }

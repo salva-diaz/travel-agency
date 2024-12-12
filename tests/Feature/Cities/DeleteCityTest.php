@@ -14,13 +14,13 @@ class DeleteCityTest extends TestCase
         $city = CityFactory::new()->createOne();
 
         $this->assertDatabaseHas('cities', [
-            'name' => $city->name,
+            'id' => $city->id,
         ]);
 
-        $city->delete();
+        $this->delete("/api/cities/{$city->id}");
 
         $this->assertDatabaseMissing('cities', [
-            'name' => $city->name,
+            'id' => $city->id,
         ]);
     }
 }
