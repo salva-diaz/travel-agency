@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Flights;
 
 use Database\Factories\FlightFactory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Lightit\Flights\App\Transformers\FlightTransformer;
-
-uses(RefreshDatabase::class);
 
 test('can get a flight', function () {
     $flight = FlightFactory::new()->createOne();

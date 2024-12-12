@@ -7,10 +7,7 @@ namespace Tests\Feature\Flights;
 use Carbon\Carbon;
 use Database\Factories\AirlineFactory;
 use Database\Factories\CityFactory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
-
-uses(RefreshDatabase::class);
 
 test('can create a flight successfully', function () {
     $departureCity = CityFactory::new()->createOne();

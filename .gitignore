@@ -26,7 +26,7 @@ yarn-error.log
 /tsconfig.tsbuildinfo
 /.phpunit.cache/
 /.zed
-/.pnpm-store
+.pnpm-store/*
 
 # Sentry Config File
 .env.sentry-build-plugin

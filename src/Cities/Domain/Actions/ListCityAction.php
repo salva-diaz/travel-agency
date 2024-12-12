@@ -30,6 +30,8 @@ class ListCityAction
                 }),
             ])
             ->allowedSorts('id', 'name')
+            ->withCount('departureFlights')
+            ->withCount('arrivalFlights')
             ->paginate();
     }
 }

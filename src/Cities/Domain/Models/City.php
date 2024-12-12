@@ -11,11 +11,18 @@ use Lightit\Airlines\Domain\Models\Airline;
 use Lightit\Flights\Domain\Models\Flight;
 
 /**
- * @property int                             $id
- * @property string                          $name
+ * 
+ *
+ * @property int $id
+ * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Airline> $airlines
+ * @property-read int|null $airlines_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Flight> $arrivalFlights
+ * @property-read int|null $arrival_flights_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Flight> $departureFlights
+ * @property-read int|null $departure_flights_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City query()
@@ -23,14 +30,6 @@ use Lightit\Flights\Domain\Models\Flight;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City whereUpdatedAt($value)
- *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Airline> $airlines
- * @property-read int|null $airlines_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Flight> $arrivalFlights
- * @property-read int|null $arrival_flights_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Flight> $departureFlights
- * @property-read int|null $departure_flights_count
- *
  * @mixin \Eloquent
  */
 class City extends Model
@@ -39,6 +38,11 @@ class City extends Model
         'id',
         'created_at',
         'updated_at',
+    ];
+
+    protected $casts = [
+        'created_at'=> 'datetime',
+        'updated_at'=> 'datetime',
     ];
 
     /**
