@@ -25,10 +25,13 @@ class ListCityTest extends TestCase
 
         $response
             ->assertStatus(200)
-            ->assertExactJson([
+            ->assertJson([
                 'status' => 200,
                 'success' => true,
                 'data' => $cities->map(fn (City $city) => $transformer->transform($city))->toArray(),
+                'pagination' => [
+                    'total' => $cities->count(),
+                ],
             ]);
     }
 }

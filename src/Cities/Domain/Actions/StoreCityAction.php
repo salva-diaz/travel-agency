@@ -11,11 +11,10 @@ class StoreCityAction
 {
     public function execute(CityDto $cityDto): City
     {
-        $city = new City([
-            'name' => $cityDto->getName(),
+        /** @var City $city */
+        $city = City::create([
+            'name' => $cityDto->name,
         ]);
-
-        $city->save();
 
         return $city;
     }

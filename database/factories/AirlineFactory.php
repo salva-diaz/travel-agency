@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Lightit\Cities\Domain\Models\City;
+use Lightit\Airlines\Domain\Models\Airline;
 
 /**
- * @extends Factory<City>
+ * @extends Factory<Airline>
  */
-class CityFactory extends Factory
+class AirlineFactory extends Factory
 {
-    protected $model = City::class;
+    protected $model = Airline::class;
 
     public function definition(): array
     {
         return [
-            'name' => fake()->city . rand(1, 9999),
+            'name' => fake()->company . rand(1, 9999),
+            'description' => fake()->text,
             'created_at' => now(),
             'updated_at' => now(),
         ];

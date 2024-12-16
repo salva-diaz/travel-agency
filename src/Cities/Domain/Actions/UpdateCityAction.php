@@ -12,7 +12,7 @@ class UpdateCityAction
     public function execute(City $city, CityDto $cityDto): City
     {
         $city->update([
-            'name' => $cityDto->getName(),
+            'name' => $cityDto->name,
         ]);
 
         return $city->refresh();
