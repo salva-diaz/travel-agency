@@ -15,11 +15,11 @@ class AirlineTransformer extends Transformer
     public function transform(Airline $airline): array
     {
         return [
-            'id' => (int) $airline->id,
-            'name' => (string) $airline->name,
-            'description' => (string) $airline->description,
-            'created_at' => (string) $airline->created_at,
-            'updated_at' => (string) $airline->updated_at,
+            'id' => $airline->id,
+            'name' => $airline->name,
+            'description' => $airline->description,
+            'created_at' => $airline->created_at?->format('Y-m-d H:i:s'),
+            'updated_at' => $airline->updated_at?->format('Y-m-d H:i:s'),
             'active_flights_count' => (int) $airline->active_flights_count,
         ];
     }
