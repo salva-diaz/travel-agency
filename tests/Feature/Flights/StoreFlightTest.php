@@ -23,10 +23,10 @@ test('can create a flight successfully', function () {
     ]);
 });
 
-test("can't create a flight with arrival time before departure time", function() {
+test("can't create a flight with arrival time before departure time", function () {
     $request = StoreFlightRequestFactory::new()->create();
-    $arrivalTime = Carbon::make($request['departure_time'])->subDay();
-    $request['arrival_time'] = $arrivalTime->format('Y-m-d H:i:s');
+    $arrivalTime = Carbon::make($request['departure_time'])?->subDay();
+    $request['arrival_time'] = $arrivalTime?->format('Y-m-d H:i:s');
     
     $response = $this->post('/api/flights', $request);
         
