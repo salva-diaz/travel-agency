@@ -119,7 +119,7 @@ export const CitiesTable = () => {
         city={selectedCity}
       />
       <div>
-        <div className="gap-3 text-black sm:flex-col md:flex-col lg:flex">
+        <div className="flex flex-col gap-3 text-black">
           <input
             type="text"
             placeholder="Filter by name"
@@ -130,7 +130,7 @@ export const CitiesTable = () => {
             placeholder="Filter by airline"
             onChange={(e) => handleFilterChange("airline_id", e.target.value)}
           />
-          <div>
+          <div className="flex items-center gap-3">
             <label htmlFor="sort" className="text-sm font-medium">
               Sort By:
             </label>
@@ -147,13 +147,13 @@ export const CitiesTable = () => {
               <option value="name:desc">Name (Z-A)</option>
             </select>
           </div>
+          <Button
+            variant="secondary"
+            onClick={() => setIsCreateModalVisible(true)}
+          >
+            Create new
+          </Button>
         </div>
-        <Button
-          variant="secondary"
-          onClick={() => setIsCreateModalVisible(true)}
-        >
-          Create new
-        </Button>
       </div>
       <table className="w-full whitespace-nowrap text-left">
         <thead className="border-b border-white/10 text-sm leading-6 text-black">
