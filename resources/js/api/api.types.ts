@@ -22,3 +22,12 @@ export interface ServiceResponse<T> {
   status: number;
   success: boolean;
 }
+
+export interface City {
+  id: number;
+  name: string;
+  departureFlightsCount: number;
+  arrivalFlightsCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
