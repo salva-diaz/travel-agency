@@ -1,20 +1,21 @@
+import { FormEvent } from "react";
+
+import type { City } from "~/api/api.types";
 import { updateCity } from "~/api/cities";
 import type { ModalProps } from "~/shared.types";
 import { Button, Modal } from "~/ui";
 
 interface CityModalProps extends ModalProps {
-  city: {
-    id: number;
-    name: string;
-  };
+  city: City;
 }
 
 export const EditCityModal = ({ show, onClose, city }: CityModalProps) => {
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      let res = await updateCity(city.id, { name: e.target.name.value });
-      console.log(res);
+      const formData = new FormData(e.currentTarget);
+
+      await updateCity(city.id, { name: formData.get("name") });
       alert("city updated successfully");
       onClose();
     } catch (error: any) {
@@ -38,9 +39,8 @@ export const EditCityModal = ({ show, onClose, city }: CityModalProps) => {
       description="Please fill in the new details for the city."
       onClose={onClose}
     >
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <input
-          type="text"
           name="name"
           defaultValue={city?.name}
           className="text-black"

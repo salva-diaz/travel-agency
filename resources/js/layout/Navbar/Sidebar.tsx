@@ -13,12 +13,6 @@ const navigation = [
     icon: <icons.HomeIcon className="w-6" />,
     role: ["standard", "admin"],
   },
-  {
-    path: ROUTES.users,
-    label: "Users",
-    icon: <icons.UserGroupIcon className="w-6" />,
-    role: "admin",
-  },
 ] as const;
 
 export const Sidebar = ({

@@ -1,13 +1,16 @@
+import { FormEvent } from "react";
+
 import { createCity } from "~/api/cities";
 import type { ModalProps } from "~/shared.types";
 import { Button, Modal } from "~/ui";
 
 export const CreateCityModal = ({ show, onClose }: ModalProps) => {
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      let res = await createCity({ name: e.target.name.value });
-      console.log(res);
+      const formData = new FormData(e.currentTarget);
+      await createCity({ name: formData.get("name") });
+
       alert("city created successfully");
       onClose();
     } catch (error: any) {
@@ -31,9 +34,8 @@ export const CreateCityModal = ({ show, onClose }: ModalProps) => {
       description="Please fill in the details for the new city."
       onClose={onClose}
     >
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <input
-          type="text"
           name="name"
           placeholder="City Name"
           className="text-black"

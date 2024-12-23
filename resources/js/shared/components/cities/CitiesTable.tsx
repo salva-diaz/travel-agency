@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import { deleteCity, getCities } from "~/api/cities";
 import { CreateCityModal } from "~/modals/City/CreateCityModal";
@@ -21,15 +21,14 @@ interface Filters {
 }
 
 export const CitiesTable = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [cities, setCities] = useState<any[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [sort, setSort] = useState<string | null>(null);
   const [order, setOrder] = useState<string>("asc");
   const [filters, setFilters] = useState<Filters>({});
-  const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
-  const [isCreateModalVisible, setIsCreateModalVisible] =
-    useState<boolean>(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [selectedCity, setSelectedCity] = useState<any | null>(null);
 
   const buildQueryParams = () => {
@@ -59,7 +58,7 @@ export const CitiesTable = () => {
     }
   };
 
-  const handleSortChange = (e: any) => {
+  const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const [key, order] = e.target.value.split(":");
     setSort(key);
     setOrder(order);
@@ -108,7 +107,7 @@ export const CitiesTable = () => {
   }
 
   return (
-    <div>
+    <>
       <CreateCityModal
         show={isCreateModalVisible}
         onClose={handleCreateModalClose}
@@ -118,42 +117,40 @@ export const CitiesTable = () => {
         onClose={handleEditModalClose}
         city={selectedCity}
       />
-      <div>
-        <div className="flex flex-col gap-3 text-black">
-          <input
-            type="text"
-            placeholder="Filter by name"
-            onChange={(e) => handleFilterChange("name", e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Filter by airline"
-            onChange={(e) => handleFilterChange("airline_id", e.target.value)}
-          />
-          <div className="flex items-center gap-3">
-            <label htmlFor="sort" className="text-sm font-medium">
-              Sort By:
-            </label>
-            <select
-              id="sort"
-              value={`${sort}:${order}`}
-              onChange={handleSortChange}
-              className="rounded-md border border-gray-300 px-6 py-2 text-sm"
-            >
-              <option value="">Select an option</option>
-              <option value="id:asc">ID (smallest)</option>
-              <option value="id:desc">ID (biggest)</option>
-              <option value="name:asc">Name (A-Z)</option>
-              <option value="name:desc">Name (Z-A)</option>
-            </select>
-          </div>
-          <Button
-            variant="secondary"
-            onClick={() => setIsCreateModalVisible(true)}
+      <div className="flex flex-col gap-3 text-black">
+        <input
+          type="text"
+          placeholder="Filter by name"
+          onChange={(e) => handleFilterChange("name", e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Filter by airline"
+          onChange={(e) => handleFilterChange("airline_id", e.target.value)}
+        />
+        <div className="flex items-center gap-3">
+          <label htmlFor="sort" className="text-sm font-medium">
+            Sort By:
+          </label>
+          <select
+            id="sort"
+            value={`${sort}:${order}`}
+            onChange={handleSortChange}
+            className="rounded-md border border-gray-300 px-6 py-2 text-sm"
           >
-            Create new
-          </Button>
+            <option value="">Select an option</option>
+            <option value="id:asc">ID (smallest)</option>
+            <option value="id:desc">ID (biggest)</option>
+            <option value="name:asc">Name (A-Z)</option>
+            <option value="name:desc">Name (Z-A)</option>
+          </select>
         </div>
+        <Button
+          variant="secondary"
+          onClick={() => setIsCreateModalVisible(true)}
+        >
+          Create new
+        </Button>
       </div>
       <table className="w-full whitespace-nowrap text-left">
         <thead className="border-b border-white/10 text-sm leading-6 text-black">
@@ -198,7 +195,7 @@ export const CitiesTable = () => {
           <Button
             variant="primary"
             onClick={() => loadCities(pagination.links.previous)}
-            disabled={pagination?.links.previous ? false : true}
+            disabled={!pagination?.links.previous}
           >
             Previous
           </Button>
@@ -207,7 +204,7 @@ export const CitiesTable = () => {
           <Button
             variant="primary"
             onClick={() => loadCities(pagination.links.next)}
-            disabled={pagination?.links.next ? false : true}
+            disabled={!pagination?.links.next}
           >
             Next
           </Button>
@@ -221,6 +218,6 @@ export const CitiesTable = () => {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
