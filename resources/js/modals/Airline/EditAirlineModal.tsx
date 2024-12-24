@@ -59,7 +59,6 @@ export const EditAirlineModal = ({
           name="description"
           defaultValue={airline?.description}
           className="text-black"
-          required
         ></input>
         <Button type="submit">Save</Button>
       </form>
