@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Lightit\Airlines\App\Request;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Lightit\Airlines\Domain\DataTransferObjects\AirlineDto;
+use Lightit\Airlines\Domain\Models\Airline;
 
 class UpdateAirlineFormRequest extends FormRequest
 {
@@ -18,8 +20,15 @@ class UpdateAirlineFormRequest extends FormRequest
      */
     public function rules(): array
     {
+        /**
+         * @var Airline $airline
+         */
+        $airline = $this->route('airline');
+
         return [
-            self::NAME => ['unique:airlines,name'],
+            self::NAME => [
+                Rule::unique('airlines', 'name')->ignore($airline),
+            ],
             self::DESCRIPTION => [],
         ];
     }
