@@ -10,7 +10,7 @@ use Lightit\Airlines\Domain\Models\Airline;
 class AirlineTransformer extends Transformer
 {
     /**
-     * @return array{id: int, name: string, description: string, created_at: string|null, updated_at: string|null}
+     * @return array{id: int, name: string, description: string, createdAt: string|null, updatedAt: string|null}
      */
     public function transform(Airline $airline): array
     {
@@ -18,9 +18,9 @@ class AirlineTransformer extends Transformer
             'id' => $airline->id,
             'name' => $airline->name,
             'description' => $airline->description,
-            'created_at' => $airline->created_at?->format('Y-m-d H:i:s'),
-            'updated_at' => $airline->updated_at?->format('Y-m-d H:i:s'),
-            'active_flights_count' => (int) $airline->active_flights_count,
+            'createdAt' => $airline->created_at?->toDateTimeString(),
+            'updatedAt' => $airline->updated_at?->toDateTimeString(),
+            'activeFlightsCount' => $airline->active_flights_count,
         ];
     }
 }
