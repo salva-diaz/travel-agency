@@ -31,3 +31,15 @@ export interface City {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Airline {
+  id: number;
+  name: string;
+  description: string;
+  activeFlightsCount: number;
+}
+
+export type CreateRequestAirline = {
+  name: string;
+  description: string | null;
+};
