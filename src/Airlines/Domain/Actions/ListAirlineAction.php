@@ -31,7 +31,7 @@ class ListAirlineAction
                     });
                 }),
             ])
-            ->allowedSorts('name', 'active_flights_count')
+            ->allowedSorts('id', 'name', 'description', 'active_flights_count')
             ->withCount('activeFlights')
             ->paginate();
 
