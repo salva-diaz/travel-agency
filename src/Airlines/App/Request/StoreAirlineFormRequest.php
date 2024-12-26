@@ -21,7 +21,7 @@ class StoreAirlineFormRequest extends FormRequest
     {
         return [
             self::NAME => ['required', Rule::unique('airlines', 'name')],
-            self::DESCRIPTION => [],
+            self::DESCRIPTION => ['string', 'nullable'],
         ];
     }
 
