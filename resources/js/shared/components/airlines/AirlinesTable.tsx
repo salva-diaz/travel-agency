@@ -7,25 +7,40 @@ import { EditAirlineModal } from "~/modals/Airline/EditAirlineModal";
 import { Button } from "~/ui";
 
 interface Filters {
-  [key: string]: string;
+  name?: string;
+  description?: string;
+  cityId?: number;
 }
+const SortDirection = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
+type SortDirectionType = keyof typeof SortDirection;
+type FilterName = keyof Filters;
 
 export const AirlinesTable = () => {
   const [loading, setLoading] = useState(true);
   const [airlines, setAirlines] = useState<Airline[]>([]);
   const [pagination, setPagination] = useState<ServicePagination | null>(null);
   const [sort, setSort] = useState<string | null>(null);
-  const [order, setOrder] = useState<string>("asc");
+  const [order, setOrder] = useState<SortDirectionType>(SortDirection.asc);
   const [filters, setFilters] = useState<Filters>({});
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [selectedAirline, setSelectedAirline] = useState<any | null>(null);
 
+  function isFilter(propertyName: string): propertyName is FilterName {
+    return propertyName in filters;
+  }
+
   const buildQueryParams = () => {
     const params = new URLSearchParams();
 
     Object.keys(filters).forEach((key) => {
-      params.append(`filter[${key}]`, filters[key]);
+      if (isFilter(key)) {
+        params.append(`filter[${key}]`, filters[key] ? `${filters[key]}` : "");
+      }
     });
 
     if (sort) params.append("sort", order === "asc" ? sort : `-${sort}`);
@@ -49,7 +64,8 @@ export const AirlinesTable = () => {
   const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const [key, order] = e.target.value.split(":");
     setSort(key);
-    setOrder(order);
+
+    if (order in SortDirection) setOrder(order as SortDirectionType);
   };
 
   const handleFilterChange = (key: string, value: string) => {
