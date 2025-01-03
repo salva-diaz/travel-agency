@@ -1,4 +1,4 @@
-import { City } from "./api.types";
+import { City, ServiceResponse } from "./api.types";
 
 const API_BASE_URL = "/api/cities";
 
@@ -28,13 +28,13 @@ function makeRequest<ResolvedType, ReqBodyType = null>(
   });
 }
 
-export function getCities(
-  url: string | null = null,
-  queryParams: string,
-): Promise<any> {
-  if (url) return makeRequest<City | Error, undefined>("GET", url);
+export function getCities(url: string | null = null, queryParams: string) {
+  if (url) return makeRequest<ServiceResponse<City[]>>("GET", url);
 
-  return makeRequest<City | Error>("GET", API_BASE_URL + "?" + queryParams);
+  return makeRequest<ServiceResponse<City[]>>(
+    "GET",
+    API_BASE_URL + "?" + queryParams,
+  );
 }
 
 export function getCityById(id: number): Promise<City | Error> {
