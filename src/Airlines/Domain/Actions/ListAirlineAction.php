@@ -30,6 +30,14 @@ class ListAirlineAction
                                 ->orWhere('arrival_city_id', $city_id);
                     });
                 }),
+                // Filter airlines by two cities. Airline must be active on both cities
+                AllowedFilter::callback('inCities', function ($query, array $cities) {
+                    $query->whereHas('cities', function ($q) use ($cities) {
+                        $q->where('city_id', $cities[0]);
+                    })->whereHas('cities', function ($q) use ($cities) {
+                        $q->where('city_id', $cities[1]);
+                    });
+                }),
             ])
             ->allowedSorts('id', 'name', 'description', 'active_flights_count')
             ->withCount('activeFlights')
