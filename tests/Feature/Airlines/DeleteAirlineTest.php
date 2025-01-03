@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Airlines;
 
-use Illuminate\Http\JsonResponse;
 use Database\Factories\AirlineFactory;
+use Illuminate\Http\JsonResponse;
 use Tests\TestCase;
 
 class DeleteAirlineTest extends TestCase
