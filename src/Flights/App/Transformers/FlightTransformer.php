@@ -13,13 +13,22 @@ class FlightTransformer extends Transformer
     {
         return [
             'id' => (int) $flight->id,
-            'departure_city_id' => (int) $flight->departure_city_id,
-            'arrival_city_id' => (int) $flight->arrival_city_id,
-            'airline_id' => (int) $flight->airline_id,
-            'departure_time' => (string) $flight->departure_time,
-            'arrival_time' => (string) $flight->arrival_time,
-            'created_at' => (string) $flight->created_at,
-            'updated_at' => (string) $flight->updated_at,
+            'departureCity' => (object) [
+                'id' => $flight->departureCity->id,
+                'name' => $flight->departureCity->name,
+            ],
+            'arrivalCity' => (object) [
+                'id' => $flight->arrivalCity->id,
+                'name' => $flight->arrivalCity->name,
+            ],
+            'airline' => (object) [
+                'id' => $flight->airline->id,
+                'name' => $flight->airline->name,
+            ],
+            'departureTime' => (string) $flight->departure_time,
+            'arrivalTime' => (string) $flight->arrival_time,
+            'createdAt' => (string) $flight->created_at,
+            'updatedAt' => (string) $flight->updated_at,
         ];
     }
 }
