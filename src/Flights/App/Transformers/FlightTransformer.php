@@ -13,15 +13,15 @@ class FlightTransformer extends Transformer
     {
         return [
             'id' => (int) $flight->id,
-            'departureCity' => (object) [
+            'departureCity' => [
                 'id' => $flight->departureCity->id,
                 'name' => $flight->departureCity->name,
             ],
-            'arrivalCity' => (object) [
+            'arrivalCity' => [
                 'id' => $flight->arrivalCity->id,
                 'name' => $flight->arrivalCity->name,
             ],
-            'airline' => (object) [
+            'airline' => [
                 'id' => $flight->airline->id,
                 'name' => $flight->airline->name,
             ],
