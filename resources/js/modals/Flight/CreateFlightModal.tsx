@@ -69,7 +69,7 @@ export const CreateFlightModal = ({
     queryFn: async () => {
       const res = await getAirlines(
         undefined,
-        `filter[inCities]=${selectedCities.departure},${selectedCities.arrival}`,
+        `filter[inCities]=${selectedCities.departure},${selectedCities.arrival}&pageSize=50`,
       );
       if (res.data.length === 0)
         pushToast({
