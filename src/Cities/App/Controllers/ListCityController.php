@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Lightit\Cities\App\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Lightit\Cities\App\Request\ListCityFormRequest;
 use Lightit\Cities\App\Transformers\CityTransformer;
 use Lightit\Cities\Domain\Actions\ListCityAction;

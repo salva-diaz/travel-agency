@@ -1,20 +1,25 @@
 import { ChangeEvent, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
+  Flight,
   FlightFilters,
   ServicePagination,
   SortDirection,
   SortDirectionType,
 } from "~/api/api.types";
 import { getCities } from "~/api/cities";
-import { getFlights } from "~/api/flights";
+import { deleteFlight, getFlights } from "~/api/flights";
 import { CreateFlightModal } from "~/modals/Flight/CreateFlightModal";
-import { Button } from "~/ui";
+import { EditFlightModal } from "~/modals/Flight/EditFlightModal";
+import { Button, errorToast, useToastStore } from "~/ui";
 
 type FilterName = keyof FlightFilters;
 
 export const FlightsTable = () => {
+  const queryClient = useQueryClient();
+  const { pushToast } = useToastStore();
+
   const [sort, setSort] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<SortDirectionType>(
     SortDirection.asc,
@@ -22,7 +27,9 @@ export const FlightsTable = () => {
   const [filters, setFilters] = useState<FlightFilters>({});
   const [pagination, setPagination] = useState<ServicePagination | null>(null);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
+  const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
 
   const buildQueryParams = () => {
     const params = new URLSearchParams();
@@ -65,7 +72,7 @@ export const FlightsTable = () => {
   });
 
   const { data: citiesResponse } = useQuery({
-    queryFn: () => getCities("/api/cities", ""),
+    queryFn: () => getCities("/api/cities", "pageSize=50"),
     queryKey: ["cities"],
     staleTime: 20000,
   });
@@ -79,8 +86,34 @@ export const FlightsTable = () => {
 
   const handleCreateModalClose = () => {
     setIsCreateModalVisible(false);
-    // TODO: handle GET flights query invalidation on create flight success
+    queryClient.invalidateQueries({
+      queryKey: [pageNumber, buildQueryParams()],
+    });
   };
+
+  const handleEditModalClose = () => {
+    setIsEditModalVisible(false);
+    queryClient.invalidateQueries({
+      queryKey: [pageNumber, buildQueryParams()],
+    });
+  };
+
+  const deleteFlightMutation = useMutation({
+    mutationFn: (flightId: number) => {
+      return deleteFlight(flightId);
+    },
+    onSuccess: () => {
+      pushToast({
+        type: "success",
+        title: "Success",
+        message: "Flight deleted successfully!",
+      });
+      queryClient.invalidateQueries({
+        queryKey: [pageNumber, buildQueryParams()],
+      });
+    },
+    onError: errorToast,
+  });
 
   return (
     <>
@@ -88,6 +121,12 @@ export const FlightsTable = () => {
         show={isCreateModalVisible}
         onClose={handleCreateModalClose}
         cities={citiesResponse?.data ?? []}
+      />
+      <EditFlightModal
+        show={isEditModalVisible}
+        onClose={handleEditModalClose}
+        cities={citiesResponse?.data ?? []}
+        flight={selectedFlight}
       />
       <div className="flex flex-col gap-3 text-black">
         <input
@@ -136,9 +175,9 @@ export const FlightsTable = () => {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Airline</th>
             <th>Departure city</th>
             <th>Arrival city</th>
+            <th>Airline</th>
             <th>Departure time</th>
             <th>Arrival time</th>
           </tr>
@@ -147,11 +186,37 @@ export const FlightsTable = () => {
           {flightsResponse?.data.data.map((flight) => (
             <tr key={flight.id} className="text-black">
               <td>{flight.id}</td>
-              <td>{flight.airline.name}</td>
               <td>{flight.departureCity.name}</td>
               <td>{flight.arrivalCity.name}</td>
+              <td>{flight.airline.name}</td>
               <td>{flight.departureTime}</td>
               <td>{flight.arrivalTime}</td>
+              <td>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setSelectedFlight(flight);
+                    setIsEditModalVisible(true);
+                  }}
+                >
+                  Edit
+                </Button>
+              </td>
+              <td>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    if (
+                      confirm(
+                        `Are you sure you want to delete flight ${flight.id}?`,
+                      )
+                    )
+                      deleteFlightMutation.mutate(flight.id);
+                  }}
+                >
+                  Delete
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>

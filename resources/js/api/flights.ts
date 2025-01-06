@@ -1,6 +1,11 @@
 import axios from "axios";
 
-import { CreateRequestFlight, Flight, ServiceResponse } from "./api.types";
+import {
+  CreateRequestFlight,
+  Flight,
+  ServiceResponse,
+  UpdateRequestFlight,
+} from "./api.types";
 
 const BASE_URL = "/api/flights";
 
@@ -19,4 +24,19 @@ export function createFlight(flightData: CreateRequestFlight) {
     .catch((err) => {
       throw err;
     });
+}
+
+export function deleteFlight(id: number) {
+  return axios
+    .delete(BASE_URL + `/${id}`)
+    .then()
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export function updateFlight(id: number, flightData: UpdateRequestFlight) {
+  return axios.put(BASE_URL + `/${id}`, flightData).catch((err) => {
+    throw err;
+  });
 }

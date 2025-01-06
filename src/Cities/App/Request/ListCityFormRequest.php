@@ -21,7 +21,8 @@ class ListCityFormRequest extends FormRequest
         ];
     }
 
-    public function toDto(): ListCityFiltersDto {
+    public function toDto(): ListCityFiltersDto
+    {
         return new ListCityFiltersDto(
             $this->integer(self::PAGE_SIZE, 15),
         );

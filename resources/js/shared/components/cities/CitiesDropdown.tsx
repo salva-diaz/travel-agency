@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { City, Flight } from "~/api/api.types";
 
@@ -32,7 +32,7 @@ export const CitiesDropdown: React.FC<CitiesProps> = ({
         required
         id="departure"
         name="departure-city-id"
-        value={departure ?? ""}
+        value={departure ?? flight?.departureCity.id ?? ""}
         className="text-black"
         onChange={(e) => {
           const selectedId = parseInt(e.target.value);
@@ -54,6 +54,7 @@ export const CitiesDropdown: React.FC<CitiesProps> = ({
         required
         id="arrival"
         name="arrival-city-id"
+        value={arrival ?? flight?.arrivalCity.id ?? ""}
         className="text-black"
         onChange={(e) => {
           const selectedId = parseInt(e.target.value);

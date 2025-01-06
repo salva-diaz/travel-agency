@@ -90,3 +90,11 @@ export type CreateRequestFlight = {
   departure_time: string;
   arrival_time: string;
 };
+
+export type UpdateRequestFlight = {
+  airline_id: number;
+  departure_city_id: number;
+  arrival_city_id: number;
+  departure_time: string;
+  arrival_time: string;
+};
