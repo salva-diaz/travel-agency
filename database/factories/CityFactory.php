@@ -17,9 +17,7 @@ class CityFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->city . rand(1, 9999),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'name' => fake()->city.' '.rand(1, 9999),
         ];
     }
 }

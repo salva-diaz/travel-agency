@@ -17,10 +17,8 @@ class AirlineFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->company . rand(1, 9999),
+            'name' => fake()->company.' '.rand(1, 9999),
             'description' => fake()->text,
-            'created_at' => now(),
-            'updated_at' => now(),
         ];
     }
 }
