@@ -1,13 +1,12 @@
 import { FormEvent, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 
-import { getAirlines } from "~/api/airlines";
 import { City } from "~/api/api.types";
 import { createFlight } from "~/api/flights";
 import type { ModalProps } from "~/shared.types";
 import { AirlineDropdown } from "~/shared/components/airlines/AirlineDropdown";
 import { CitiesDropdown } from "~/shared/components/cities/CitiesDropdown";
+import { useGetAirlines } from "~/shared/hooks/useGetAirlines";
 import { Button, errorToast, Modal, useToastStore } from "~/ui";
 
 interface CreateFlightModalProps extends ModalProps {
@@ -65,27 +64,7 @@ export const CreateFlightModal = ({
     }
   }
 
-  const { data: airlinesResponse } = useQuery({
-    queryFn: async () => {
-      const res = await getAirlines(
-        undefined,
-        `filter[inCities]=${selectedCities.departure},${selectedCities.arrival}&pageSize=50`,
-      );
-      if (res.data.length === 0)
-        pushToast({
-          type: "warning",
-          title: "Warning",
-          message:
-            "No airlines available for the selected city pair. Please select another departure or arrival city.",
-          duration: 8000,
-        });
-      return res;
-    },
-    queryKey: ["inCities", selectedCities],
-    staleTime: 20000,
-    enabled:
-      selectedCities.departure !== null && selectedCities.arrival !== null,
-  });
+  const airlinesResponse = useGetAirlines(selectedCities);
 
   return (
     <Modal
