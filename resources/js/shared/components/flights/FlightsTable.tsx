@@ -72,7 +72,7 @@ export const FlightsTable = () => {
   });
 
   const { data: citiesResponse } = useQuery({
-    queryFn: () => getCities("/api/cities", "pageSize=50"),
+    queryFn: () => getCities("pageSize=50"),
     queryKey: ["cities"],
     staleTime: 20000,
   });

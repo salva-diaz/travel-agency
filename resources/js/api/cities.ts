@@ -28,10 +28,7 @@ function makeRequest<ResolvedType, ReqBodyType = null>(
   });
 }
 
-export function getCities(url: string | null = null, queryParams: string) {
-  if (url)
-    return makeRequest<ServiceResponse<City[]>>("GET", url + "?" + queryParams);
-
+export function getCities(queryParams: string) {
   return makeRequest<ServiceResponse<City[]>>(
     "GET",
     API_BASE_URL + "?" + queryParams,

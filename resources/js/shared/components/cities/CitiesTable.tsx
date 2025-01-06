@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 
+import { City } from "~/api/api.types";
 import { deleteCity, getCities } from "~/api/cities";
 import { CreateCityModal } from "~/modals/City/CreateCityModal";
 import { EditCityModal } from "~/modals/City/EditCityModal";
@@ -29,7 +30,8 @@ export const CitiesTable = () => {
   const [filters, setFilters] = useState<Filters>({});
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
-  const [selectedCity, setSelectedCity] = useState<any | null>(null);
+  const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const buildQueryParams = () => {
     const params = new URLSearchParams();
@@ -40,15 +42,15 @@ export const CitiesTable = () => {
 
     if (sort) params.append("sort", order === "asc" ? sort : `-${sort}`);
 
+    params.append("page", pageNumber.toString());
+
     return params.toString();
   };
 
-  const loadCities = async (url: string | null = null) => {
+  const loadCities = async () => {
     try {
       const queryParams = buildQueryParams();
-      const res = url
-        ? await getCities(url, queryParams)
-        : await getCities(null, queryParams);
+      const res = await getCities(queryParams);
       setCities(res.data);
       setPagination(res.pagination);
     } catch (error: any) {
@@ -194,8 +196,11 @@ export const CitiesTable = () => {
         {pagination && (
           <Button
             variant="primary"
-            onClick={() => loadCities(pagination.links.previous)}
-            disabled={!pagination?.links.previous}
+            onClick={() => {
+              setPageNumber((prev) => prev - 1);
+              loadCities();
+            }}
+            disabled={pageNumber === 1}
           >
             Previous
           </Button>
@@ -203,8 +208,11 @@ export const CitiesTable = () => {
         {pagination && (
           <Button
             variant="primary"
-            onClick={() => loadCities(pagination.links.next)}
-            disabled={!pagination?.links.next}
+            onClick={() => {
+              setPageNumber((prev) => prev + 1);
+              loadCities();
+            }}
+            disabled={pageNumber === pagination.totalPages}
           >
             Next
           </Button>
@@ -213,7 +221,7 @@ export const CitiesTable = () => {
           <div className="text-black">
             <span className="text-sm">
               showing {pagination.count} of {pagination.total} cities. Page{" "}
-              {pagination.currentPage} of {pagination.totalPages}
+              {pageNumber} of {pagination.totalPages}
             </span>
           </div>
         )}
