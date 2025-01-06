@@ -85,7 +85,7 @@ export const EditFlightModal = ({
         });
       return res;
     },
-    queryKey: ["inCities", selectedCities],
+    queryKey: ["inCities", selectedCities.departure, selectedCities.arrival],
     staleTime: 20000,
     enabled:
       selectedCities.departure !== null && selectedCities.arrival !== null,

@@ -25,6 +25,13 @@ export const CitiesDropdown: React.FC<CitiesProps> = ({
     ? cities.filter((city) => city.id !== departure)
     : cities;
 
+  useEffect(() => {
+    setParentCities({
+      departure: flight?.departureCity.id ?? null,
+      arrival: flight?.arrivalCity.id ?? null,
+    });
+  }, [flight]);
+
   return (
     <>
       <label htmlFor="departure">Departure: </label>
