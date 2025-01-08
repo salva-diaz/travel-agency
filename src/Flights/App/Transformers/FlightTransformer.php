@@ -26,7 +26,7 @@ class FlightTransformer extends Transformer
                 'name' => $flight->airline->name,
             ],
             'departureTime' => $flight->departure_time->format('Y-m-d\TH:i'),
-            'arrivalTime' => $flight->departure_time->format('Y-m-d\TH:i'),
+            'arrivalTime' => $flight->arrival_time->format('Y-m-d\TH:i'),
             'createdAt' => (string) $flight->created_at,
             'updatedAt' => (string) $flight->updated_at,
         ];
