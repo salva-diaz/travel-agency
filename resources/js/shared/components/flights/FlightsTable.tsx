@@ -223,30 +223,28 @@ export const FlightsTable = () => {
       </table>
       <div className="flex gap-2">
         {pagination && (
-          <Button
-            variant="primary"
-            onClick={() => setPageNumber((prev) => prev - 1)}
-            disabled={pageNumber === 1}
-          >
-            Previous
-          </Button>
-        )}
-        {pagination && (
-          <Button
-            variant="primary"
-            onClick={() => setPageNumber((prev) => prev + 1)}
-            disabled={pageNumber === pagination.totalPages}
-          >
-            Next
-          </Button>
-        )}
-        {pagination && (
-          <div className="text-black">
-            <span className="text-sm">
-              showing {pagination.count} of {pagination.total} flights. Page{" "}
-              {pageNumber} of {pagination.totalPages}
-            </span>
-          </div>
+          <>
+            <Button
+              variant="primary"
+              onClick={() => setPageNumber((prev) => prev - 1)}
+              disabled={pageNumber === 1}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => setPageNumber((prev) => prev + 1)}
+              disabled={pageNumber === pagination.totalPages}
+            >
+              Next
+            </Button>
+            <div className="text-black">
+              <span className="text-sm">
+                showing {pagination.count} of {pagination.total} flights. Page{" "}
+                {pageNumber} of {pagination.totalPages}
+              </span>
+            </div>
+          </>
         )}
       </div>
     </>
