@@ -20,7 +20,7 @@ export const FlightsTable = () => {
   const queryClient = useQueryClient();
   const { pushToast } = useToastStore();
 
-  const [sort, setSort] = useState<string | null>(null);
+  const [sort, setSort] = useState("");
   const [sortOrder, setSortOrder] = useState<SortDirectionType>(
     SortDirection.asc,
   );

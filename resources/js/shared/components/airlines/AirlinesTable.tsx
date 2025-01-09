@@ -1,31 +1,26 @@
 import { ChangeEvent, useEffect, useState } from "react";
 
 import { deleteAirline, getAirlines } from "~/api/airlines";
-import { Airline, ServicePagination } from "~/api/api.types";
+import {
+  Airline,
+  AirlineFilters,
+  ServicePagination,
+  SortDirection,
+  SortDirectionType,
+} from "~/api/api.types";
 import { CreateAirlineModal } from "~/modals/Airline/CreateAirlineModal";
 import { EditAirlineModal } from "~/modals/Airline/EditAirlineModal";
 import { Button } from "~/ui";
 
-interface Filters {
-  name?: string;
-  description?: string;
-  cityId?: number;
-}
-const SortDirection = {
-  asc: "asc",
-  desc: "desc",
-} as const;
-
-type SortDirectionType = keyof typeof SortDirection;
-type FilterName = keyof Filters;
+type FilterName = keyof AirlineFilters;
 
 export const AirlinesTable = () => {
   const [loading, setLoading] = useState(true);
   const [airlines, setAirlines] = useState<Airline[]>([]);
   const [pagination, setPagination] = useState<ServicePagination | null>(null);
-  const [sort, setSort] = useState<string | null>(null);
+  const [sort, setSort] = useState("");
   const [order, setOrder] = useState<SortDirectionType>(SortDirection.asc);
-  const [filters, setFilters] = useState<Filters>({});
+  const [filters, setFilters] = useState<AirlineFilters>({});
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [selectedAirline, setSelectedAirline] = useState<any | null>(null);
