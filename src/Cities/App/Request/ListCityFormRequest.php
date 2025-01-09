@@ -7,13 +7,10 @@ namespace Lightit\Cities\App\Request;
 use Illuminate\Foundation\Http\FormRequest;
 use Lightit\Cities\Domain\DataTransferObjects\ListCityFiltersDto;
 
-class ListCityFormRequest extends FormRequest
+final class ListCityFormRequest extends FormRequest
 {
     public const PAGE_SIZE = 'pageSize';
 
-    /**
-     * @return array<string, mixed>
-     */
     public function rules(): array
     {
         return [

@@ -7,13 +7,10 @@ namespace Lightit\Airlines\App\Request;
 use Illuminate\Foundation\Http\FormRequest;
 use Lightit\Airlines\Domain\DataTransferObjects\ListAirlineFiltersDto;
 
-class ListAirlineFormRequest extends FormRequest
+final class ListAirlineFormRequest extends FormRequest
 {
     public const PAGE_SIZE = 'pageSize';
 
-    /**
-     * @return array<string, mixed>
-     */
     public function rules(): array
     {
         return [
