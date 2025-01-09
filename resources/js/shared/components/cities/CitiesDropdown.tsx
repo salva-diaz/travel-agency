@@ -15,12 +15,8 @@ export const CitiesDropdown: React.FC<CitiesProps> = ({
   flight,
   setParentCities,
 }) => {
-  const [departure, setDeparture] = useState<number | null>(
-    flight?.departureCity.id ?? null,
-  );
-  const [arrival, setArrival] = useState<number | null>(
-    flight?.arrivalCity.id ?? null,
-  );
+  const [departure, setDeparture] = useState(flight?.departureCity.id ?? null);
+  const [arrival, setArrival] = useState(flight?.arrivalCity.id ?? null);
   const filteredCities = departure
     ? cities.filter((city) => city.id !== departure)
     : cities;

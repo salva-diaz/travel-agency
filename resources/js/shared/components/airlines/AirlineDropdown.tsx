@@ -11,7 +11,7 @@ export const AirlineDropdown: React.FC<AirlinesProps> = ({
   airlines,
   flight,
 }) => {
-  const [selectedAirline, setSelectedAirline] = useState<number | null>(
+  const [selectedAirline, setSelectedAirline] = useState(
     flight?.airline.id ?? null,
   );
 
