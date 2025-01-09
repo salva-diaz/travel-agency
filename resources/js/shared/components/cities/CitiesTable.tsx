@@ -1,43 +1,42 @@
 import { ChangeEvent, useEffect, useState } from "react";
 
-import { City } from "~/api/api.types";
+import {
+  City,
+  CityFilters,
+  ServicePagination,
+  SortDirection,
+  SortDirectionType,
+} from "~/api/api.types";
 import { deleteCity, getCities } from "~/api/cities";
 import { CreateCityModal } from "~/modals/City/CreateCityModal";
 import { EditCityModal } from "~/modals/City/EditCityModal";
 import { Button } from "~/ui";
 
-interface Pagination {
-  count: number;
-  total: number;
-  perPage: number;
-  currentPage: number;
-  totalPages: number;
-  links: {
-    next: string;
-    previous: string;
-  };
-}
-interface Filters {
-  [key: string]: string;
-}
+type FilterName = keyof CityFilters;
 
 export const CitiesTable = () => {
   const [loading, setLoading] = useState(true);
   const [cities, setCities] = useState<any[]>([]);
-  const [pagination, setPagination] = useState<Pagination | null>(null);
-  const [sort, setSort] = useState<string | null>(null);
-  const [order, setOrder] = useState<string>("asc");
-  const [filters, setFilters] = useState<Filters>({});
+  const [pagination, setPagination] = useState<ServicePagination | null>(null);
+  const [sort, setSort] = useState("");
+  const [order, setOrder] = useState<SortDirectionType>(SortDirection.asc);
+  const [filters, setFilters] = useState<CityFilters>({});
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
 
+  function isFilter(propertyName: string): propertyName is FilterName {
+    return propertyName in filters;
+  }
+
   const buildQueryParams = () => {
     const params = new URLSearchParams();
 
     Object.keys(filters).forEach((key) => {
-      params.append(`filter[${key}]`, filters[key]);
+      if (isFilter(key)) {
+        params.append(`filter[${key}]`, filters[key] ? `${filters[key]}` : "");
+      }
     });
 
     if (sort) params.append("sort", order === "asc" ? sort : `-${sort}`);
@@ -63,7 +62,8 @@ export const CitiesTable = () => {
   const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const [key, order] = e.target.value.split(":");
     setSort(key);
-    setOrder(order);
+
+    if (order in SortDirection) setOrder(order as SortDirectionType);
   };
 
   const handleFilterChange = (key: string, value: string) => {

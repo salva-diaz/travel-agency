@@ -23,6 +23,11 @@ export interface ServiceResponse<T> {
   success: boolean;
 }
 
+export interface CityFilters {
+  name?: string;
+  airline_id?: number;
+}
+
 export interface AirlineFilters {
   name?: string;
   description?: string;
