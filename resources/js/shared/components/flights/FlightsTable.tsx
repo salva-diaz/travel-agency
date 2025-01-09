@@ -14,6 +14,7 @@ import { CreateFlightModal } from "~/modals/Flight/CreateFlightModal";
 import { EditFlightModal } from "~/modals/Flight/EditFlightModal";
 import { Button, errorToast, useToastStore } from "~/ui";
 
+const FIRST_PAGE = 1;
 type FilterName = keyof FlightFilters;
 
 export const FlightsTable = () => {
@@ -28,7 +29,7 @@ export const FlightsTable = () => {
   const [pagination, setPagination] = useState<ServicePagination | null>(null);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(FIRST_PAGE);
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
 
   const buildQueryParams = () => {

@@ -197,30 +197,28 @@ export const AirlinesTable = () => {
       </table>
       <div className="flex gap-2">
         {pagination && (
-          <Button
-            variant="primary"
-            onClick={() => loadAirlines(pagination.links.previous)}
-            disabled={!pagination?.links.previous}
-          >
-            Previous
-          </Button>
-        )}
-        {pagination && (
-          <Button
-            variant="primary"
-            onClick={() => loadAirlines(pagination.links.next)}
-            disabled={!pagination?.links.next}
-          >
-            Next
-          </Button>
-        )}
-        {pagination && (
-          <div className="text-black">
-            <span className="text-sm">
-              showing {pagination.count} of {pagination.total} airlines. Page{" "}
-              {pagination.currentPage} of {pagination.totalPages}
-            </span>
-          </div>
+          <>
+            <Button
+              variant="primary"
+              onClick={() => loadAirlines(pagination.links.previous)}
+              disabled={!pagination?.links.previous}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => loadAirlines(pagination.links.next)}
+              disabled={!pagination?.links.next}
+            >
+              Next
+            </Button>
+            <div className="text-black">
+              <span className="text-sm">
+                showing {pagination.count} of {pagination.total} airlines. Page{" "}
+                {pagination.currentPage} of {pagination.totalPages}
+              </span>
+            </div>
+          </>
         )}
       </div>
     </>

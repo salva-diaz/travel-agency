@@ -12,6 +12,7 @@ import { CreateCityModal } from "~/modals/City/CreateCityModal";
 import { EditCityModal } from "~/modals/City/EditCityModal";
 import { Button } from "~/ui";
 
+const FIRST_PAGE = 1;
 type FilterName = keyof CityFilters;
 
 export const CitiesTable = () => {
@@ -24,7 +25,7 @@ export const CitiesTable = () => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(FIRST_PAGE);
 
   function isFilter(propertyName: string): propertyName is FilterName {
     return propertyName in filters;
@@ -206,24 +207,24 @@ export const CitiesTable = () => {
           </Button>
         )}
         {pagination && (
-          <Button
-            variant="primary"
-            onClick={() => {
-              setPageNumber((prev) => prev + 1);
-              loadCities();
-            }}
-            disabled={pageNumber === pagination.totalPages}
-          >
-            Next
-          </Button>
-        )}
-        {pagination && (
-          <div className="text-black">
-            <span className="text-sm">
-              showing {pagination.count} of {pagination.total} cities. Page{" "}
-              {pageNumber} of {pagination.totalPages}
-            </span>
-          </div>
+          <>
+            <Button
+              variant="primary"
+              onClick={() => {
+                setPageNumber((prev) => prev + 1);
+                loadCities();
+              }}
+              disabled={pageNumber === pagination.totalPages}
+            >
+              Next
+            </Button>
+            <div className="text-black">
+              <span className="text-sm">
+                showing {pagination.count} of {pagination.total} cities. Page{" "}
+                {pageNumber} of {pagination.totalPages}
+              </span>
+            </div>
+          </>
         )}
       </div>
     </>
