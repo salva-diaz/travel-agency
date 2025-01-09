@@ -6,6 +6,7 @@ namespace Lightit\Airlines\Domain\Actions;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Lightit\Airlines\Domain\DataTransferObjects\ListAirlineFiltersDto;
+use Lightit\Airlines\Domain\Filters\AirlineEnabledInTwoCitiesFilter;
 use Lightit\Airlines\Domain\Models\Airline;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -32,13 +33,7 @@ class ListAirlineAction
                     });
                 }),
                 // Filter airlines by two cities. Airline must be active on both cities
-                AllowedFilter::callback('inCities', function ($query, array $cities) {
-                    $query->whereHas('cities', function ($q) use ($cities) {
-                        $q->where('city_id', $cities[0]);
-                    })->whereHas('cities', function ($q) use ($cities) {
-                        $q->where('city_id', $cities[1]);
-                    });
-                }),
+                AllowedFilter::custom('inCities', new AirlineEnabledInTwoCitiesFilter()),
             ])
             ->allowedSorts('id', 'name', 'description', 'active_flights_count')
             ->withCount('activeFlights')
