@@ -36,7 +36,9 @@ export function deleteFlight(id: number) {
 }
 
 export function updateFlight(id: number, flightData: UpdateRequestFlight) {
-  return axios.put(BASE_URL + `/${id}`, flightData).catch((err) => {
-    throw err;
-  });
+  return axios
+    .put<ServiceResponse<Flight>>(BASE_URL + `/${id}`, flightData)
+    .catch((err) => {
+      throw err;
+    });
 }

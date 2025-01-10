@@ -1,30 +1,27 @@
-import { useState } from "react";
+import { UseFormRegister } from "react-hook-form";
 
 import { Airline, Flight } from "~/api/api.types";
+import { EditFlightFormValues } from "~/modals/Flight/EditFlightModal";
 
 interface AirlinesProps {
   airlines: Airline[];
-  flight: Flight | null;
+  flight: Flight | undefined;
+  register: UseFormRegister<EditFlightFormValues>;
 }
 
 export const AirlineDropdown: React.FC<AirlinesProps> = ({
   airlines,
   flight,
+  register,
 }) => {
-  const [selectedAirline, setSelectedAirline] = useState(
-    flight?.airline.id ?? null,
-  );
-
   return (
     <>
       <label htmlFor="airline">Airline: </label>
       <select
         required
         id="airline"
-        name="airline-id"
-        value={selectedAirline ?? ""}
         className="text-black"
-        onChange={(e) => setSelectedAirline(parseInt(e.target.value))}
+        {...register("airlineId")}
       >
         <option value="">Select airline</option>
         {airlines?.map((airline) => (

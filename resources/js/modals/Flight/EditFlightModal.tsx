@@ -1,5 +1,9 @@
 import { FormEvent, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { City, Flight } from "~/api/api.types";
 import { updateFlight } from "~/api/flights";
@@ -11,8 +15,16 @@ import { Button, errorToast, Modal, useToastStore } from "~/ui";
 
 interface EditFlightModalProps extends ModalProps {
   cities: City[];
-  flight: Flight | null;
+  flight: Flight | undefined;
 }
+const editFormSchema = z.object({
+  departureId: z.string(),
+  arrivalId: z.string(),
+  airlineId: z.string(),
+  departureTime: z.string(),
+  arrivalTime: z.string(),
+});
+export type EditFlightFormValues = z.infer<typeof editFormSchema>;
 
 export const EditFlightModal = ({
   show,
@@ -26,49 +38,47 @@ export const EditFlightModal = ({
     arrival: number | null;
   }>({ departure: null, arrival: null });
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    try {
-      const formData = new FormData(e.currentTarget);
+  const { handleSubmit, register, getValues, resetField, reset, watch } =
+    useForm<EditFlightFormValues>({
+      resolver: zodResolver(editFormSchema),
+    });
 
-      const [departureDate, arrivalDate] = [
-        new Date(formData.get("departure-time") as string),
-        new Date(formData.get("arrival-time") as string),
-      ];
-      if (departureDate >= arrivalDate) {
-        pushToast({
-          type: "error",
-          title: "Error",
-          message: "Departure time must be before arrival time",
-        });
-        return;
-      }
+  const { data: airlinesResponse } = useGetAirlines({
+    departure: getValues("departureId")
+      ? parseInt(getValues("departureId"))
+      : null,
+    arrival: getValues("arrivalId") ? parseInt(getValues("arrivalId")) : null,
+  }).useGetAirlines;
 
-      if (!flight?.id) throw Error("id is not defined");
-
-      await updateFlight(flight.id, {
-        airline_id: parseInt(formData.get("airline-id") as string),
-        departure_city_id: parseInt(
-          formData.get("departure-city-id") as string,
-        ),
-        arrival_city_id: parseInt(formData.get("arrival-city-id") as string),
-        departure_time: format(departureDate, "yyyy-MM-dd HH:mm:ss"),
-        arrival_time: format(arrivalDate, "yyyy-MM-dd HH:mm:ss"),
-      });
-
-      pushToast({
-        type: "success",
-        title: "Success",
-        message: "Flight updated successfully!",
-      });
-
+  const { mutate } = useMutation({
+    mutationFn: (data: EditFlightFormValues & { flightId: number }) =>
+      updateFlight(data.flightId, {
+        airline_id: parseInt(data.airlineId),
+        departure_city_id: parseInt(data.departureId),
+        arrival_city_id: parseInt(data.arrivalId),
+        departure_time: format(data.departureTime, "yyyy-MM-dd HH:mm:ss"),
+        arrival_time: format(data.arrivalTime, "yyyy-MM-dd HH:mm:ss"),
+      }),
+    mutationKey: ["editFlights", flight?.id],
+    onError: errorToast,
+    onSuccess: () => {
       onClose();
-    } catch (error: any) {
-      errorToast(error);
-    }
-  }
+      reset();
+    },
+  });
 
-  const airlinesResponse = useGetAirlines(selectedCities);
+  const editFlightSubmit = (data: EditFlightFormValues) => {
+    if (new Date(data.departureTime) >= new Date(data.arrivalTime)) {
+      pushToast({
+        type: "error",
+        title: "Error",
+        message: "Departure time must be before arrival time",
+      });
+      return;
+    }
+
+    if (flight?.id) mutate({ ...data, flightId: flight.id });
+  };
 
   return (
     <Modal
@@ -77,50 +87,41 @@ export const EditFlightModal = ({
       description="Please fill in the new details for the flight."
       onClose={onClose}
     >
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+      <form
+        onSubmit={handleSubmit(editFlightSubmit)}
+        className="flex flex-col space-y-4"
+      >
         <CitiesDropdown
           cities={cities}
-          flight={flight}
-          setParentCities={setSelectedCities}
+          register={register}
+          reset={resetField}
+          watch={watch}
         />
 
         <AirlineDropdown
           airlines={airlinesResponse?.data ?? []}
           flight={flight}
+          register={register}
         />
 
         <label htmlFor="departure-time">Departure time: </label>
         <input
           required
           id="departure-time"
-          name="departure-time"
           type="datetime-local"
           className="text-black"
-          defaultValue={
-            flight?.departureTime
-              ? format(
-                  new Date(flight.departureTime.replace(" ", "T")),
-                  "yyyy-MM-dd'T'HH:mm",
-                )
-              : ""
-          }
+          defaultValue={flight?.departureTime ?? ""}
+          {...register("departureTime")}
         />
 
         <label htmlFor="arrival-time">Arrival time: </label>
         <input
           required
           id="arrival-time"
-          name="arrival-time"
           type="datetime-local"
           className="text-black"
-          defaultValue={
-            flight?.arrivalTime
-              ? format(
-                  new Date(flight.arrivalTime.replace(" ", "T")),
-                  "yyyy-MM-dd'T'HH:mm",
-                )
-              : ""
-          }
+          defaultValue={flight?.arrivalTime ?? ""}
+          {...register("arrivalTime")}
         />
         <Button type="submit">Create</Button>
       </form>

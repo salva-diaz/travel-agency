@@ -1,32 +1,39 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { UseFormRegister, UseFormWatch } from "react-hook-form";
 
-import { City, Flight } from "~/api/api.types";
+import { City } from "~/api/api.types";
+import { EditFlightFormValues } from "~/modals/Flight/EditFlightModal";
 
 interface CitiesProps {
   cities: City[];
-  flight: Flight | null;
-  setParentCities: React.Dispatch<
-    React.SetStateAction<{ departure: number | null; arrival: number | null }>
-  >;
+  register: UseFormRegister<EditFlightFormValues>;
+  reset: (fieldName: keyof EditFlightFormValues) => void;
+  watch: UseFormWatch<{
+    departureId: string;
+    arrivalId: string;
+    airlineId: string;
+    departureTime: string;
+    arrivalTime: string;
+  }>;
 }
 
 export const CitiesDropdown: React.FC<CitiesProps> = ({
   cities,
-  flight,
-  setParentCities,
+  register,
+  reset,
+  watch,
 }) => {
-  const [departure, setDeparture] = useState(flight?.departureCity.id ?? null);
-  const [arrival, setArrival] = useState(flight?.arrivalCity.id ?? null);
-  const filteredCities = departure
-    ? cities.filter((city) => city.id !== departure)
+  const [departureId, arrivalId] = watch(["departureId", "arrivalId"]);
+
+  const filteredCities = departureId
+    ? cities.filter((city) => city.id !== parseInt(departureId ?? "0"))
     : cities;
 
   useEffect(() => {
-    setParentCities({
-      departure: flight?.departureCity.id ?? null,
-      arrival: flight?.arrivalCity.id ?? null,
-    });
-  }, [flight]);
+    if (departureId === arrivalId) {
+      reset("arrivalId");
+    }
+  }, [watch]);
 
   return (
     <>
@@ -34,15 +41,8 @@ export const CitiesDropdown: React.FC<CitiesProps> = ({
       <select
         required
         id="departure"
-        name="departure-city-id"
-        value={departure ?? flight?.departureCity.id ?? ""}
         className="text-black"
-        onChange={(e) => {
-          const selectedId = parseInt(e.target.value);
-          setDeparture(selectedId);
-          if (selectedId === arrival) setArrival(null);
-          setParentCities({ departure: selectedId, arrival: arrival });
-        }}
+        {...register("departureId")}
       >
         <option value="">Select departure</option>
         {cities?.map((city) => (
@@ -56,15 +56,9 @@ export const CitiesDropdown: React.FC<CitiesProps> = ({
       <select
         required
         id="arrival"
-        name="arrival-city-id"
-        value={arrival ?? flight?.arrivalCity.id ?? ""}
         className="text-black"
-        onChange={(e) => {
-          const selectedId = parseInt(e.target.value);
-          setArrival(selectedId);
-          setParentCities({ departure: departure, arrival: selectedId });
-        }}
-        disabled={!departure}
+        disabled={!departureId}
+        {...register("arrivalId")}
       >
         <option value="">Select arrival</option>
         {filteredCities.map((city) => (

@@ -9,7 +9,7 @@ export const useGetAirlines = (selectedCities: {
 }) => {
   const { pushToast } = useToastStore();
 
-  const { data: airlinesResponse } = useQuery({
+  const useGetAirlines = useQuery({
     queryFn: async () => {
       const res = await getAirlines(
         undefined,
@@ -31,5 +31,5 @@ export const useGetAirlines = (selectedCities: {
       selectedCities.departure !== null && selectedCities.arrival !== null,
   });
 
-  return airlinesResponse;
+  return { useGetAirlines };
 };

@@ -26,11 +26,11 @@ export const FlightsTable = () => {
     SortDirection.asc,
   );
   const [filters, setFilters] = useState<FlightFilters>({});
-  const [pagination, setPagination] = useState<ServicePagination | null>(null);
+  const [pagination, setPagination] = useState<ServicePagination>();
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [pageNumber, setPageNumber] = useState(FIRST_PAGE);
-  const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
+  const [selectedFlight, setSelectedFlight] = useState<Flight>();
 
   const buildQueryParams = () => {
     const params = new URLSearchParams();
