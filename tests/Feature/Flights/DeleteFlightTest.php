@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Flights;
 
-use Illuminate\Http\JsonResponse;
 use Database\Factories\FlightFactory;
+use Illuminate\Http\JsonResponse;
 
 test('can delete a flight', function () {
     $flight = FlightFactory::new()->createOne();

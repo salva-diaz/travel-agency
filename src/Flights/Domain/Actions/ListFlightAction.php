@@ -19,8 +19,9 @@ class ListFlightAction
          * @var LengthAwarePaginator<Flight>
          */
         $paginate = QueryBuilder::for(Flight::class)
-            ->allowedFilters([])
+            ->allowedFilters(['airline.name', 'departureCity.name', 'arrivalCity.name'])
             ->allowedSorts('id', 'departure_time', 'arrival_time')
+            ->with('airline:id,name', 'departureCity:id,name', 'arrivalCity:id,name')
             ->paginate();
 
         return $paginate;

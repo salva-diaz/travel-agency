@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Lightit\Cities\Domain\Actions;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Lightit\Cities\Domain\DataTransferObjects\ListCityFiltersDto;
 use Lightit\Cities\Domain\Models\City;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -14,7 +15,7 @@ class ListCityAction
     /**
      * @return LengthAwarePaginator<City>
      */
-    public function execute(): LengthAwarePaginator
+    public function execute(ListCityFiltersDto $dto): LengthAwarePaginator
     {
         /**
          * @var LengthAwarePaginator<City>
@@ -34,7 +35,7 @@ class ListCityAction
             ->allowedSorts('id', 'name')
             ->withCount('departureFlights')
             ->withCount('arrivalFlights')
-            ->paginate();
+            ->paginate($dto->pageSize);
 
         return $paginate;
     }

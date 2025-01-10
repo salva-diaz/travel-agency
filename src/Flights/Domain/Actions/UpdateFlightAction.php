@@ -11,7 +11,7 @@ class UpdateFlightAction
 {
     public function execute(Flight $flight, FlightDto $flightDto): Flight
     {
-        $flight->update([
+        $flight->updateOrFail([
             'departure_time' => $flightDto->departure_time,
             'arrival_time' => $flightDto->arrival_time,
             'departure_city_id' => $flightDto->departure_city_id,
@@ -19,6 +19,6 @@ class UpdateFlightAction
             'airline_id' => $flightDto->airline_id,
         ]);
 
-        return $flight->refresh();
+        return $flight;
     }
 }

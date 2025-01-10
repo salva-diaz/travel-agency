@@ -25,8 +25,6 @@ class FlightFactory extends Factory
             'airline_id' => AirlineFactory::new()->createOne(),
             'departure_time' => Carbon::instance($this->faker->dateTimeBetween('now', '+2 days')),
             'arrival_time' => Carbon::instance($this->faker->dateTimeBetween('+2 days', '+4 days')),
-            'created_at' => now(),
-            'updated_at' => now(),
         ];
     }
 }
