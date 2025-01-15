@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -33,10 +33,6 @@ export const EditFlightModal = ({
   flight,
 }: EditFlightModalProps) => {
   const { pushToast } = useToastStore();
-  const [selectedCities, setSelectedCities] = useState<{
-    departure: number | null;
-    arrival: number | null;
-  }>({ departure: null, arrival: null });
 
   const { handleSubmit, register, getValues, resetField, reset, watch } =
     useForm<EditFlightFormValues>({
@@ -49,6 +45,19 @@ export const EditFlightModal = ({
       : null,
     arrival: getValues("arrivalId") ? parseInt(getValues("arrivalId")) : null,
   }).useGetAirlines;
+
+  useEffect(() => {
+    reset(
+      {
+        departureId: flight?.departureCity.id.toString(),
+        arrivalId: flight?.arrivalCity.id.toString(),
+        airlineId: flight?.airline.id.toString(),
+        departureTime: flight?.departureTime,
+        arrivalTime: flight?.arrivalTime,
+      },
+      { keepDirtyValues: true },
+    );
+  }, [flight, airlinesResponse]);
 
   const { mutate } = useMutation({
     mutationFn: (data: EditFlightFormValues & { flightId: number }) =>
@@ -64,6 +73,11 @@ export const EditFlightModal = ({
     onSuccess: () => {
       onClose();
       reset();
+      pushToast({
+        type: "success",
+        title: "Success",
+        message: "Flight updated successfully!",
+      });
     },
   });
 
@@ -100,7 +114,6 @@ export const EditFlightModal = ({
 
         <AirlineDropdown
           airlines={airlinesResponse?.data ?? []}
-          flight={flight}
           register={register}
         />
 
@@ -123,7 +136,7 @@ export const EditFlightModal = ({
           defaultValue={flight?.arrivalTime ?? ""}
           {...register("arrivalTime")}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">Save</Button>
       </form>
     </Modal>
   );

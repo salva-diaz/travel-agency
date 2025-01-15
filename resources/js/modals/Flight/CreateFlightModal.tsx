@@ -1,4 +1,3 @@
-import { FormEvent, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -33,17 +32,10 @@ export const CreateFlightModal = ({
 }: CreateFlightModalProps) => {
   const { pushToast } = useToastStore();
 
-  const {
-    handleSubmit,
-    register,
-    getValues,
-    resetField,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm<CreateFlightFormValues>({
-    resolver: zodResolver(createFormSchema),
-  });
+  const { handleSubmit, register, getValues, resetField, watch, reset } =
+    useForm<CreateFlightFormValues>({
+      resolver: zodResolver(createFormSchema),
+    });
 
   const { mutate } = useMutation({
     mutationFn: (data: CreateFlightFormValues) =>
@@ -59,6 +51,11 @@ export const CreateFlightModal = ({
     onSuccess: () => {
       onClose();
       reset();
+      pushToast({
+        type: "success",
+        title: "Success",
+        message: "Flight created successfully!",
+      });
     },
   });
 
@@ -104,7 +101,6 @@ export const CreateFlightModal = ({
 
         <AirlineDropdown
           airlines={airlinesResponse.useGetAirlines?.data?.data ?? []}
-          flight={undefined}
           register={register}
         />
 
