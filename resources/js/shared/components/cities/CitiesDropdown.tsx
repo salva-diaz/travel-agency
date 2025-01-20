@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { UseFormRegister, UseFormWatch } from "react-hook-form";
 
 import { City } from "~/api/api.types";
-import { EditFlightFormValues } from "~/modals/Flight/EditFlightModal";
+import { FlightFormValues } from "~/shared.types";
 
 interface CitiesProps {
   cities: City[];
-  register: UseFormRegister<EditFlightFormValues>;
-  reset: (fieldName: keyof EditFlightFormValues) => void;
+  register: UseFormRegister<FlightFormValues>;
+  reset: (fieldName: keyof FlightFormValues) => void;
   watch: UseFormWatch<{
     departureId: string;
     arrivalId: string;

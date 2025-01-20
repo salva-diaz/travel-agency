@@ -1,11 +1,11 @@
 import { UseFormRegister } from "react-hook-form";
 
 import { Airline } from "~/api/api.types";
-import { EditFlightFormValues } from "~/modals/Flight/EditFlightModal";
+import { FlightFormValues } from "~/shared.types";
 
 interface AirlinesProps {
   airlines: Airline[];
-  register: UseFormRegister<EditFlightFormValues>;
+  register: UseFormRegister<FlightFormValues>;
 }
 
 export const AirlineDropdown: React.FC<AirlinesProps> = ({

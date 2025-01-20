@@ -27,12 +27,9 @@ export function createFlight(flightData: CreateRequestFlight) {
 }
 
 export function deleteFlight(id: number) {
-  return axios
-    .delete(BASE_URL + `/${id}`)
-    .then()
-    .catch((err) => {
-      throw err;
-    });
+  return axios.delete(BASE_URL + `/${id}`).catch((err) => {
+    throw err;
+  });
 }
 
 export function updateFlight(id: number, flightData: UpdateRequestFlight) {

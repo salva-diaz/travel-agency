@@ -3,11 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 import { City, Flight } from "~/api/api.types";
 import { updateFlight } from "~/api/flights";
 import type { ModalProps } from "~/shared.types";
+import { flightFormSchema, FlightFormValues } from "~/shared.types";
 import { AirlineDropdown } from "~/shared/components/airlines/AirlineDropdown";
 import { CitiesDropdown } from "~/shared/components/cities/CitiesDropdown";
 import { useGetAirlines } from "~/shared/hooks/useGetAirlines";
@@ -17,14 +17,6 @@ interface EditFlightModalProps extends ModalProps {
   cities: City[];
   flight: Flight | undefined;
 }
-const editFormSchema = z.object({
-  departureId: z.string(),
-  arrivalId: z.string(),
-  airlineId: z.string(),
-  departureTime: z.string(),
-  arrivalTime: z.string(),
-});
-export type EditFlightFormValues = z.infer<typeof editFormSchema>;
 
 export const EditFlightModal = ({
   show,
@@ -35,8 +27,8 @@ export const EditFlightModal = ({
   const { pushToast } = useToastStore();
 
   const { handleSubmit, register, getValues, resetField, reset, watch } =
-    useForm<EditFlightFormValues>({
-      resolver: zodResolver(editFormSchema),
+    useForm<FlightFormValues>({
+      resolver: zodResolver(flightFormSchema),
     });
 
   const { data: airlinesResponse } = useGetAirlines({
@@ -60,7 +52,7 @@ export const EditFlightModal = ({
   }, [flight, airlinesResponse]);
 
   const { mutate } = useMutation({
-    mutationFn: (data: EditFlightFormValues & { flightId: number }) =>
+    mutationFn: (data: FlightFormValues & { flightId: number }) =>
       updateFlight(data.flightId, {
         airline_id: parseInt(data.airlineId),
         departure_city_id: parseInt(data.departureId),
@@ -81,7 +73,7 @@ export const EditFlightModal = ({
     },
   });
 
-  const editFlightSubmit = (data: EditFlightFormValues) => {
+  const editFlightSubmit = (data: FlightFormValues) => {
     if (new Date(data.departureTime) >= new Date(data.arrivalTime)) {
       pushToast({
         type: "error",
