@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Cities;
 
-use Illuminate\Http\JsonResponse;
 use Database\Factories\CityFactory;
+use Illuminate\Http\JsonResponse;
 use Tests\TestCase;
 
 class DeleteCityTest extends TestCase

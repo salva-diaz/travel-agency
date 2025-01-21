@@ -6,7 +6,7 @@ import type { ModalProps } from "~/shared.types";
 import { Button, Modal } from "~/ui";
 
 interface CityModalProps extends ModalProps {
-  city: City;
+  city: City | null;
 }
 
 export const EditCityModal = ({ show, onClose, city }: CityModalProps) => {
@@ -15,7 +15,9 @@ export const EditCityModal = ({ show, onClose, city }: CityModalProps) => {
     try {
       const formData = new FormData(e.currentTarget);
 
-      await updateCity(city.id, { name: formData.get("name") });
+      if (!city?.id) throw Error("City id not defined");
+
+      await updateCity(city?.id, { name: formData.get("name") });
       alert("city updated successfully");
       onClose();
     } catch (error: any) {
