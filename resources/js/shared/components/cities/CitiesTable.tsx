@@ -24,7 +24,7 @@ export const CitiesTable = () => {
   const [filters, setFilters] = useState<CityFilters>({});
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
-  const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [selectedCity, setSelectedCity] = useState<City>();
   const [pageNumber, setPageNumber] = useState(FIRST_PAGE);
 
   function isFilter(propertyName: string): propertyName is FilterName {
