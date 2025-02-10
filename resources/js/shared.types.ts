@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef, ReactElement } from "react";
 import { z } from "zod";
 
 export type SVGProps = ComponentPropsWithoutRef<"svg">;
@@ -16,3 +16,9 @@ export const flightFormSchema = z.object({
   arrivalTime: z.string(),
 });
 export type FlightFormValues = z.infer<typeof flightFormSchema>;
+
+export interface ColumnProps<T> {
+  key: string;
+  title: string;
+  // render?: (column: ColumnProps<T>, item: T) => ReactElement;
+}

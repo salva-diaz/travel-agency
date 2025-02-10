@@ -6,7 +6,7 @@ import type { ModalProps } from "~/shared.types";
 import { Button, Modal } from "~/ui";
 
 interface CityModalProps extends ModalProps {
-  city: City | null;
+  city: City | undefined;
 }
 
 export const EditCityModal = ({ show, onClose, city }: CityModalProps) => {
